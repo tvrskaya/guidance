@@ -1,5 +1,5 @@
-#ifndef GUIDANCE_MAZE_GRAPH_H
-#define GUIDANCE_MAZE_GRAPH_H
+#ifndef GUIDANCE_GRAPH_H
+#define GUIDANCE_GRAPH_H
 
 #include <vector>
 #include <memory>
@@ -15,13 +15,24 @@ using MazeVertexPtr = std::shared_ptr<MazeVertex>;
 struct MazeVertex {
     int x;
     int y;
+    int cost;
 
     MazeVertex() = default;
-    MazeVertex(int x, int y) : x{x}, y{y}  {}
+    MazeVertex(int x, int y, int cost = 0) : x{x}, y{y}, cost(cost)  {}
 
     bool operator==(const MazeVertex& other) const {
         return x == other.x && y == other.y;
     }
+    bool operator!=(const MazeVertex& other) const {
+        return !(*this == other);
+    }
+    bool operator<(const MazeVertex& other) const {
+        return (this->x + this->y) < (other.x + other.y);
+    }
+    bool operator>(const MazeVertex& other) const {
+        return !(*this < other);
+    }
+
 };
 
 static std::ostream& operator<<(std::ostream& stream, const MazeVertex& v) {
@@ -34,12 +45,22 @@ struct MazeVertexHash {
     }
 };
 
+// struct MazeVertexCompare {
+//     operator()(const MazeVertex& v1, const MazeVertex& v2) {
+
+//     }
+// };
+
 class Graph {
 private:
     std::unordered_map<MazeVertex, std::vector<MazeVertex>, MazeVertexHash> edges_;
 public:
     void AddVertex(const MazeVertex& v) {
         edges_[v] = {};
+    }
+
+    void AddNeighbor(const MazeVertex& v, const MazeVertex& neigh) {
+        edges_[v].push_back(neigh);
     }
 
     [[nodiscard]]
@@ -54,7 +75,7 @@ public:
 
     [[nodiscard]]
     size_t Size() const noexcept {
-        edges_.size();
+        return edges_.size();
     }
 
     void CalculateNeighbours() {
@@ -77,4 +98,4 @@ public:
 } // namespace guidance
 
 
-#endif // GUIDANCE_MAZE_GRAPH_H
+#endif // GUIDANCE_GRAPH_H

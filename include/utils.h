@@ -8,8 +8,8 @@
 #include <string>
 #include <fstream>
 
-#include "field_type.h"
-#include "maze_graph.h"
+#include "cell_types.h"
+#include "graph.h"
 #include "maze.h"
 
 namespace guidance::utils {
@@ -55,8 +55,8 @@ static Graph ParseGraph(const std::string& path) {
     int y = 0;
     while (std::getline(f, line)) {
         for (const auto& s : line) {
-            if (guidance::utils::IsPlace(s)) {
-                graph.AddVertex({x, y});
+            if (s != kWall) {
+                graph.AddVertex({x, y, GetCostFromCell(s)});
             }
             ++x;
         }       
@@ -68,6 +68,10 @@ static Graph ParseGraph(const std::string& path) {
     graph.CalculateNeighbours();
 
     return graph;
+}
+
+static int heuristic(const MazeVertex& v1, const MazeVertex& v2) {
+    return std::abs(v1.x - v1.y) + std::abs(v2.x - v2.y);
 }
 
 } // namespace lighthouse::utils

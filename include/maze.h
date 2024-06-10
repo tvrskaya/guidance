@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <sstream>
-#include "field_type.h"
+#include "cell_types.h"
 
 namespace guidance {
 
@@ -22,17 +22,28 @@ public:
     }
 
     void SetPath(const std::unordered_map<MazeVertex, MazeVertex, MazeVertexHash>& path, const MazeVertex start, const MazeVertex end) noexcept {
-        for (const auto& [came_to, from] : path) {
-            if (from == end) {
-                maze_[from.y][from.x] = kEnd;
-                break;
-            }
-            if (from == start) {
-                maze_[from.y][from.x] = kStart;
-                break;
-            }
-            maze_[from.y][from.x] == kPath;
+        std::cout << "Size: " << path.size() << '\n';
+        auto current = end;
+        while (current != start) {
+            current = path.at(current);
+            maze_[current.y][current.x] = kPath;
         }
+        maze_[start.y][start.x] = kStart;
+        maze_[end.y][end.x] = kEnd;
+    }
+
+    [[nodiscard]]
+    Graph GetGraph() const {
+        Graph graph{};
+        for (int y = 0; y < maze_.size(); ++y) {
+            for (int x = 0; x < maze_[y].size(); ++x) {
+                if (maze_[y][x] != kWall) {
+                    graph.AddVertex({x, y, GetCostFromCell(maze_[y][x])});
+                }
+            }
+        }
+        graph.CalculateNeighbours();
+        return graph;
     }
 
     [[nodiscard]]

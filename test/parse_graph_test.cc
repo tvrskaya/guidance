@@ -33,15 +33,15 @@ TEST(ParseGraph, HardMaze) {
     std::fstream f(path, std::ios_base::in);
     ASSERT_TRUE(f.is_open());
 
-    size_t zeros_count = 0;
+    int places_count = 0;
     std::string line;
     while(std::getline(f, line)) {
         for (const auto s : line) {
-            if (guidance::utils::IsPlace(s)) {
-                ++zeros_count;
+            if (s != kWall) {
+                ++places_count;
             }
         }
     }
 
-    ASSERT_TRUE(graph.Size() == zeros_count) << "Size: " << graph.Size();
+    ASSERT_TRUE(graph.Size() == places_count) << "Size: " << graph.Size() << " Places: " << places_count;
 }
