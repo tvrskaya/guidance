@@ -3,8 +3,10 @@
 
 #include "utils.h"
 
+const std::string kRelativePath{"res/mazes/"};
+
 TEST(ParseGraph, SimpleMaze) {
-    const std::string path = "res/mazes/simple_maze.txt";
+    const std::string path = kRelativePath +  "simple_maze.txt";
     guidance::Graph graph{};
     try {
         graph = guidance::utils::ParseGraph(path);
@@ -22,7 +24,7 @@ TEST(ParseGraph, SimpleMaze) {
 }
 
 TEST(ParseGraph, HardMaze) {
-    const std::string path = "res/mazes/hard_maze.txt";
+    const std::string path = kRelativePath +  "hard_maze.txt";
     guidance::Graph graph{};
     try {
         graph = guidance::utils::ParseGraph(path);

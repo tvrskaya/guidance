@@ -1,0 +1,10 @@
+set(TEST_TARGET_NAME "${PROJECT_NAME}-Test")
+
+file(GLOB_RECURSE TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cc")
+
+add_executable(${TEST_TARGET_NAME} ${TEST_SOURCES})
+
+target_include_directories(${TEST_TARGET_NAME} PRIVATE ${PROJECT_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
+target_link_libraries(${TEST_TARGET_NAME} PRIVATE GTest::gtest_main)
+
+add_test(NAME ${TEST_TARGET_NAME} COMMAND ${PROJECT_NAME})

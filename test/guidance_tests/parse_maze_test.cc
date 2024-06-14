@@ -4,8 +4,10 @@
 #include "utils.h"
 #include "maze.h"
 
+const std::string kRelativePath{"res/mazes/"};
+
 TEST(ParseMaze, SimpleMaze) {
-    const std::string path = "res/mazes/simple_maze.txt";
+    const std::string path = kRelativePath +  "simple_maze.txt";
     guidance::Maze maze{};
     try {
         maze = guidance::utils::ParseMaze(path);

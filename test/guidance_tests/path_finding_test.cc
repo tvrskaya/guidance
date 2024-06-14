@@ -4,8 +4,10 @@
 #include "utils.h"
 #include "graph.h"
 
+const std::string kRelativePath{"res/mazes/"};
+
 TEST(PathFinding, BreadthFirstSearch) {
-    const std::string path = "res/mazes/big_maze.txt";
+    const std::string path = kRelativePath +  "big_maze.txt";
     guidance::Graph graph{};
     guidance::Maze maze{};
     try {
@@ -27,7 +29,7 @@ TEST(PathFinding, BreadthFirstSearch) {
 }
 
 TEST(PathFinding, Dijkstra) {
-    const std::string path = "res/mazes/big_maze.txt";
+    const std::string path = kRelativePath +  "big_maze.txt";
     guidance::Graph graph{};
     guidance::Maze maze{};
     try {
@@ -49,7 +51,7 @@ TEST(PathFinding, Dijkstra) {
 }
 
 TEST(PathFinding, AStar) {
-    const std::string path = "res/mazes/big_maze.txt";
+    const std::string path = kRelativePath +  "big_maze.txt";
     guidance::Graph graph{};
     guidance::Maze maze{};
     try {
